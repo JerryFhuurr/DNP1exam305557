@@ -1,0 +1,68 @@
+﻿@page "/counter"
+@using VolumeWeb.Data
+@using VolumeWeb.VolumeCalculator
+@inject IResultService ResultService
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<EditForm Model="@calculatorCylinder" OnValidSubmit="@AddCylinder">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <h2>Cylinder</h2>
+    <p>R:</p>
+    <InputNumber @bind-Value="calculatorCylinder.R"></InputNumber>
+    <p>H:</p>
+    <InputNumber @bind-Value="calculatorCylinder.H"></InputNumber>
+    <button>Calculate</button>
+</EditForm>
+
+<EditForm Model="@calculatorCone" OnValidSubmit="@AddCone">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <h2>Cone</h2>
+    <p>R:</p>
+    <InputNumber @bind-Value="calculatorCone.R"></InputNumber>
+    <p>H:</p>
+    <InputNumber @bind-Value="calculatorCone.H"></InputNumber>
+    <button>Calculate</button>
+</EditForm>
+
+@code {
+    private int currentCount = 0;
+
+    private VolumeCalculator calculatorCylinder = new VolumeCalculator(0, 0);
+    private VolumeCalculator calculatorCone = new VolumeCalculator(0, 0);
+
+    private IList<VolumeResult> results;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            results = await ResultService.GetResultsAsync();
+        }
+        catch (Exception e)
+        {
+            // update some error label here, or show popup..
+        }
+    }
+    private void AddCylinder()
+    {
+        ResultService.AddCylinderResultAsync(calculatorCylinder);
+        
+    }
+
+    private void AddCone()
+    {
+        ResultService.AddConeResultAsync(calculatorCone);
+    }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

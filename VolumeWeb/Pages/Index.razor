@@ -1,0 +1,66 @@
+﻿@page "/"
+@using VolumeWeb.Data
+@using VolumeWeb.VolumeCalculator
+@inject IResultService ResultService
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@if (results == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Height</th>
+                <th>Radius</th>
+                <th>Volume</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in results)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Type</td>
+                    <td>@item.Height</td>
+                    <td>@item.Radius</td>
+                    <td>@item.Volume</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+    private IList<VolumeResult> results;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            results = await ResultService.GetResultsAsync();
+            foreach (var r in results)
+            {
+                Console.WriteLine(r.Volume);
+            }
+        }
+        catch (Exception e)
+        {
+            // update some error label here, or show popup..
+        }
+    }
+
+
+}
