@@ -24,5 +24,15 @@ namespace VolumeWeb.VolumeCalculator
         {
             return (double)1 / 3 * Math.Pow(R, 2) * Math.PI * H;
         }
+
+        public static double CalculateVolumeCylinder2(double r, double h)
+        {
+            return Math.PI * Math.Pow(r, 2) * h;
+        }
+
+        public static double CalculateVolumeCone2(double r, double h)
+        {
+            return (double)1 / 3 * Math.Pow(r, 2) * Math.PI * h;
+        }
     }
 }

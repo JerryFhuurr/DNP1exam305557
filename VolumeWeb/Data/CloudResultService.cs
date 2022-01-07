@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -44,7 +45,6 @@ namespace VolumeWeb.Data
         public async Task AddCylinderResultAsync(VolumeCalculator.VolumeCalculator calculator)
         {
             string reesultAsJson = JsonSerializer.Serialize(calculator);
-            Console.WriteLine(reesultAsJson);
             HttpContent content = new StringContent(reesultAsJson,
                 Encoding.UTF8,
                 "application/json");
@@ -62,6 +62,29 @@ namespace VolumeWeb.Data
                 Encoding.UTF8,
                 "application/json");
             HttpResponseMessage response = await client.PostAsync(url + "/cone", content);
+            Console.WriteLine(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error, {response.StatusCode}, {response.ReasonPhrase}");
+            }
+        }
+
+        public async Task AddCylinderResultAsync2([FromQuery] double r, [FromQuery] double h)
+        {
+            
+            HttpResponseMessage response = await client.GetAsync($"https://localhost:5001/cylinder?r={r}&h={h}");
+            Console.WriteLine(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error, {response.StatusCode}, {response.ReasonPhrase}");
+            }
+        }
+
+        public async Task AddConeResultAsync2([FromQuery] double r, [FromQuery] double h)
+        {
+
+            HttpResponseMessage response = await client.GetAsync($"https://localhost:5001/cone?r={r}&h={h}");
+            Console.WriteLine(response);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"Error, {response.StatusCode}, {response.ReasonPhrase}");

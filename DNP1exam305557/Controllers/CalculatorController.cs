@@ -43,6 +43,51 @@ namespace VolumeWebService.Controllers
             }
         }
 
+        [HttpGet("/cone")]
+        public async Task<ActionResult<VolumeResult>> GetCone2([FromQuery]double r, [FromQuery]double h)
+        {
+            try
+            {
+                double result = VolumeCalculator.VolumeCalculator.CalculateVolumeCone2(r, h);
+                VolumeResult volumeResult = new VolumeResult();
+                volumeResult.Volume = result;
+                volumeResult.Radius = r;
+                volumeResult.Height = h;
+                volumeResult.Type = "cone";
+                Console.WriteLine(JsonConvert.SerializeObject(volumeResult));
+                VolumeResult resultAdded = await resultService.AddResultAsync(volumeResult);
+                return Created($"/{resultAdded.Id}", resultAdded);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("/cylinder")]
+        public async Task<ActionResult<VolumeResult>> GetCylinder2([FromQuery] double r, [FromQuery] double h)
+        {
+            try
+            {
+                Console.WriteLine(r + " " + h);
+                double result = VolumeCalculator.VolumeCalculator.CalculateVolumeCylinder2(r, h);
+                VolumeResult volumeResult = new VolumeResult();
+                volumeResult.Volume = result;
+                volumeResult.Radius = r;
+                volumeResult.Height = h;
+                volumeResult.Type = "cylinder";
+                Console.WriteLine(JsonConvert.SerializeObject(volumeResult));
+                VolumeResult resultAdded = await resultService.AddResultAsync(volumeResult);
+                return Created($"/{resultAdded.Id}", resultAdded);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         // POST api/<CalculatorController>
         [HttpPost("/cone")]
         public async Task<ActionResult<VolumeResult>> GetCone(VolumeCalculator.VolumeCalculator calculator)

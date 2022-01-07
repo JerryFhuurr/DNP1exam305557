@@ -52,13 +52,12 @@
     }
     private void AddCylinder()
     {
-        ResultService.AddCylinderResultAsync(calculatorCylinder);
-        
+        ResultService.AddCylinderResultAsync2(calculatorCylinder.R, calculatorCylinder.H);
     }
 
     private void AddCone()
     {
-        ResultService.AddConeResultAsync(calculatorCone);
+        ResultService.AddConeResultAsync2(calculatorCone.R, calculatorCone.H);
     }
 
     private void IncrementCount()
